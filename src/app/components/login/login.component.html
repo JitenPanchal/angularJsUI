@@ -8,20 +8,20 @@
         <form #loginForm="ngForm">
           <div class="form-group">
             <label for="inputUserName">Username</label>
-            <input id="username" name="username" type="text" #username="ngModel" [(ngModel)]="loginRequestModel.username" class="form-control"
+            <input  name="username" type="text" #username="ngModel" [(ngModel)]="loginRequestModel.username" class="form-control"
               placeholder="username" required autocomplete="off">
             <p class="invalid-label" *ngIf="!username.valid && username.touched">Username is required</p>
           </div>
           <div class="form-group">
             <label for="inputPassword">Password</label>
-            <input id="password" name="password" type="password" #password="ngModel" [(ngModel)]="loginRequestModel.password" password="password"
+            <input  name="password" type="password" #password="ngModel" [(ngModel)]="loginRequestModel.password" password="password"
               required class="form-control" placeholder="password" autocomplete="off" />
             <p class="invalid-label" *ngIf="!password.valid && password.touched">Password is required</p>
           </div>
           <div class="form-group">
-            <button type="button" (click)="onSubmit($event)" [disabled]="!loginForm.valid" id="buttonLogin" data-loading-text="<i class='fa fa-spinner fa-spin '></i> Login"
+            <button type="button" (click)="onSubmit($event)" [disabled]="!loginForm.valid" data-loading-text="<i class='fa fa-spinner fa-spin '></i> Login"
               class="btn btn-primary">Login</button>
-            <button type="button" name="resetButton" id="resetButton" class="btn btn-link">Reset Password</button>
+            <button type="button" name="resetButton" class="btn btn-link">Reset Password</button>
           </div>
           <p *ngIf="!loginResponseModel.isSuccess" class="invalid-label text-center font-weight-bold">{{loginResponseModel.message}}</p>
           <hr />
