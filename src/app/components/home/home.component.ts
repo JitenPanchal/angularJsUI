@@ -1,6 +1,7 @@
 import { Component, OnInit } from "@angular/core";
 import { SecurityService } from "../../services/security.service";
 import { Router } from "../../../../node_modules/@angular/router";
+import { MenuItems } from "../../static/menu-items";
 
 @Component({
   selector: "app-home",
@@ -9,6 +10,7 @@ import { Router } from "../../../../node_modules/@angular/router";
 })
 export class HomeComponent implements OnInit {
   public isHidden = false;
+  public suggestionItems: any[];
 
   constructor(
     private securityService: SecurityService,
@@ -25,4 +27,33 @@ export class HomeComponent implements OnInit {
     this.securityService.clearAuthenticatedUser();
     this.router.navigate([""]);
   }
+
+  onSearchInput(event) {
+    const searchText = event.target.value;
+
+    this.suggestionItems = [];
+    if (!searchText) {
+      return;
+    }
+
+    for (const menuItem of MenuItems) {
+      for (const item of menuItem.items) {
+        if (item.text.toLowerCase().startsWith(searchText.toLowerCase())) {
+          this.suggestionItems.push(item);
+        }
+      }
+    }
+  }
+
+  onSuggestionItemClicked(suggestionItem) {
+    console.log(suggestionItem);
+  }
+
+  onBlurSearchInput() {
+    this.suggestionItems = [];
+  }
+}
+
+export class SuggestionItem {
+  constructor(public text: string) {}
 }
