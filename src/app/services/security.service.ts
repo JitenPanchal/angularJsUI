@@ -37,4 +37,8 @@ export class SecurityService {
     const token: string = window.localStorage.getItem("token");
     return userId != null && token != null;
   }
+
+  clearAuthenticatedUser() {
+    window.localStorage.clear();
+  }
 }
