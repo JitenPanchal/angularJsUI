@@ -3,7 +3,7 @@ export class LoginRequestModel {
   public password: string;
 
   constructor() {
-    this.username = "systemadmin";
-    this.password = "Password123";
+    this.username = "admin";
+    this.password = "password";
   }
 }

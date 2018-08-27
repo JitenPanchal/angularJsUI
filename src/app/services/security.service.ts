@@ -1,16 +1,18 @@
 import { HttpClient } from "@angular/common/http";
-import { Injectable } from "@angular/core";
+import { Injectable, Inject } from "@angular/core";
 import { LoginRequestModel } from "../models/login/login-request.model";
 import { LoginResponseModel } from "../models/login/login-response.model";
 import "rxjs/Rx";
+import { Router } from "@angular/router";
+
 
 @Injectable()
 export class SecurityService {
-  constructor(private http: HttpClient) {}
+  constructor(private http: HttpClient, @Inject("BASE_URL") private baseUrl: string, private router: Router) {}
 
   validateUser(loginModel: LoginRequestModel) {
     return this.http
-      .post("http://www.localapi.com/api/security/login", {
+      .post("api/v1/membership/login", {
         username: loginModel.username,
         password: loginModel.password
       })
@@ -19,26 +21,36 @@ export class SecurityService {
       });
   }
 
-  saveAuthenticatedUser(authData: LoginResponseModel) {
-    const expirationDateTime = new Date(
-      new Date().getTime() + authData.expiresIn * 1000
-    );
-
-    window.localStorage.setItem("token", authData.token);
-    window.localStorage.setItem("userId", authData.userId.toString());
-    window.localStorage.setItem(
-      "expirationDateTime",
-      expirationDateTime.toString()
-    );
-  }
-
   isUserAuthenticated() {
-    const userId: string = window.localStorage.getItem("userId");
-    const token: string = window.localStorage.getItem("token");
-    return userId != null && token != null;
+    return document.cookie && document.cookie.indexOf(".ASPXAUTH") !== -1;
   }
 
   clearAuthenticatedUser() {
+    this.http.post("api/v1/membership/logout", null).subscribe(response => {});
+  }
+
+  callApi() {
+    console.log(document.cookie);
+    this.callApi2();
+  }
+
+  callApi2() {
+    // this.http
+    //   .get("api/v1/articles?pagenumber=1&pagesize=10")
+    //   .subscribe(
+    //     response => {},
+    //     error => {
+    //       if (!error.ok && error.url.indexOf("?ReturnUrl=") !== -1) {
+    //         alert("Your session has ended. You will be redirected to login page.");
+    //         this.router.navigate([""]);
+    //       }
+    //     }
+    //   );
+    this.http
+      .get("api/v1/articles?pagenumber=1&pagesize=10")
+      .subscribe(
+        response => {}
+      );
     window.localStorage.clear();
   }
 }

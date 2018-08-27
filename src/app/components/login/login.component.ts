@@ -46,8 +46,6 @@ export class LoginComponent implements OnInit {
 
         this.loginResponseModel = response;
 
-        this.securityService.saveAuthenticatedUser(response);
-
         if (response.isSuccess) {
           this.router.navigate(["home"]);
         }

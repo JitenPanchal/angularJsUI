@@ -49,6 +49,10 @@ export class HomeComponent implements OnInit {
     console.log(suggestionItem);
   }
 
+  onclick(event) {
+    this.securityService.callApi();
+  }
+
   onBlurSearchInput() {
     this.suggestionItems = [];
   }

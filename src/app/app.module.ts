@@ -8,9 +8,13 @@ import { SecurityService } from "./services/security.service";
 import { AppComponent } from "./app.component";
 import { HomeComponent } from "./components/home/home.component";
 import { AuthGuard } from "./services/auth-guard.service";
+import { getBaseUrl } from "./helpers/app-data";
+import { ApiInterceptor } from "./helpers/api-intercepter";
+
 
 const appRoutes: Routes = [
   { path: "", component: LoginComponent},
+  { path: "mytest", component: LoginComponent},
   { path: "home", component: HomeComponent, canActivate: [AuthGuard] }
 ];
 
@@ -22,7 +26,12 @@ const appRoutes: Routes = [
     HttpClientModule,
     RouterModule.forRoot(appRoutes)
   ],
-  providers: [SecurityService, AuthGuard],
+  providers: [
+    SecurityService,
+    AuthGuard,
+    { provide: "BASE_URL", useFactory: getBaseUrl },
+    { provide: "HTTP_INTERCEPTORS", useClass: ApiInterceptor, multi: true }
+  ],
   bootstrap: [AppComponent]
 })
 export class AppModule {}
